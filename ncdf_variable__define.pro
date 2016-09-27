@@ -626,12 +626,13 @@ FUNCTION NCDF_Variable::GetInfo
     attrIndex = Where(attrNames EQ 'add_offset', count)
     IF count GT 0 THEN info = Create_Struct(info, 'add_offset', $
         self -> GetAttrValue('add_offset'))
-    attrIndex = Where(attrNames EQ 'missing_value', count)
-    IF count GT 0 THEN info = Create_Struct(info, '_FillValue', $
-        self -> GetAttrValue('missing_value'))
-    attrIndex = Where(attrNames EQ '_FillValue', count)
-    IF count GT 0 THEN info = Create_Struct(info, '_FillValue', $
+
+    attrIndex = Where(attrNames EQ 'missing_value', count_fill)
+    attrIndex = Where(attrNames EQ '_FillValue', count_miss)
+    IF count_fill GT 0 THEN info = Create_Struct(info, '_FillValue', $
         self -> GetAttrValue('_FillValue'))
+    IF count_miss GT 0 AND count_fill EQ 0 THEN info = Create_Struct(info, '_FillValue', $
+        self -> GetAttrValue('missing_value'))
     
     RETURN, info
     
