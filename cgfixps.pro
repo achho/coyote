@@ -184,8 +184,7 @@ PRO cgFIXPS, in_filename, out_filename, $
   ENDCASE
   
   ; If the file size is 0, then there is nothing to fix. Clean up and exit with success.
-  Get_Lun, in_lun
-  IF (FStat(in_lun)).size EQ 0 THEN BEGIN
+  IF (FILE_INFO(in_filename)).size EQ 0 THEN BEGIN
     Free_lun, in_lun
     Free_lun, out_lun
     File_Delete, out_filename
@@ -198,7 +197,7 @@ PRO cgFIXPS, in_filename, out_filename, $
   target = "void"
   buffer = StrArr(100)
   
-  OpenR, in_lun, in_filename
+  OpenR, in_lun, in_filename, /GET_LUN
   WHILE target NE '%%EndProlog' DO BEGIN
       ReadF, in_lun, line
       buffer[count] = line
